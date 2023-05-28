@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\Dashboard;
+use App\Http\Controllers\User\Dashboard\MovieController;
 use App\Http\Controllers\User\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::get('movie/{movie:slug}', [MovieController::class, 'show'])->name('movie.show');
 });
 
 // Untuk render react di folder Prototype
