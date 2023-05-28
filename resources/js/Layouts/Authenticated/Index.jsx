@@ -1,7 +1,7 @@
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
-const Authenticated = ({ children }) => {
+const Authenticated = ({ auth, children }) => {
   return (
     <>
       <div className="mx-auto max-w-screen hidden lg:block">
@@ -14,7 +14,7 @@ const Authenticated = ({ children }) => {
         <div className="ml-[300px] px-[50px]">
           <div className="py-10 flex flex-col gap-[50px]">
             {/* Start : Topbar */}
-            <Topbar />
+            <Topbar name={auth.user.name} />
             {/* End : Topbar */}
             <main>{children}</main>
           </div>
