@@ -6,14 +6,9 @@ import Input from "@/Components/Input";
 import Checkbox from "@/Components/Checkbox";
 import Button from "@/Components/Button";
 
-const Create = ({ auth }) => {
-  const { setData, post, processing, errors } = useForm({
-    name: '',
-    category: '',
-    video_url: '',
-    thumbnail: '',
-    rating: '',
-    is_featured: false
+const Create = ({ auth, movie }) => {
+  const { data, setData, put, processing, errors } = useForm({
+    ...movie
   });
 
   const onHandleChange = (event) => {
@@ -25,13 +20,17 @@ const Create = ({ auth }) => {
 
   const submit = (e) => {
     e.preventDefault();
-
-    post(route('admin.dashboard.movie.store'));
+    if (data.thumbnail === movie.thumbnail) {
+      delete data.thumbnail;
+    }
+    put(route('admin.dashboard.movie.update', movie.id), {
+      ...data
+    });
   };
   return (
     <Authenticated auth={auth}>
       <Head title="Admin - Create Movie" />
-      <h1 className="text-xl mb-4"> Insert a New Movie</h1>
+      <h1 className="text-xl mb-4">Update Movie : {movie.name}</h1>
       <ValidationErrors errors={errors} />
       <form onSubmit={submit} className="w-1/2">
         <Label
@@ -41,6 +40,7 @@ const Create = ({ auth }) => {
         <Input
           type="text"
           name="name"
+          defaultValue={movie.name}
           variant="primary-outline"
           handleChange={onHandleChange}
           placeholder="Enter the name of the movie"
@@ -54,6 +54,7 @@ const Create = ({ auth }) => {
         <Input
           type="text"
           name="category"
+          defaultValue={movie.category}
           variant="primary-outline"
           handleChange={onHandleChange}
           placeholder="Enter the category of the movie"
@@ -67,6 +68,7 @@ const Create = ({ auth }) => {
         <Input
           type="text"
           name="video_url"
+          defaultValue={movie.video_url}
           variant="primary-outline"
           handleChange={onHandleChange}
           placeholder="Enter the video URL of the movie"
@@ -77,6 +79,7 @@ const Create = ({ auth }) => {
           value="Thumbnail"
           className={`mt-4`}
         />
+        <img src={`/storage/${movie.thumbnail}`} alt="" className="w-40" />
         <Input
           type="file"
           name="thumbnail"
@@ -93,6 +96,7 @@ const Create = ({ auth }) => {
         <Input
           type="number"
           name="rating"
+          defaultValue={movie.rating}
           variant="primary-outline"
           handleChange={onHandleChange}
           placeholder="Enter the rating of the movie"
@@ -107,6 +111,7 @@ const Create = ({ auth }) => {
           <Checkbox
             name="is_featured"
             handleChange={(e) => setData('is_featured', e.target.checked)}
+            checked={movie.is_featured}
           />
         </div>
         <Button type="submit" className="mt-4" processing={processing}>
