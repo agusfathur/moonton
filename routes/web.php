@@ -34,7 +34,7 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-
+Route::post('midtrans/notification', [SubscriptionPlanController::class, 'midtransCallback']);
 Route::redirect('/', '/login');
 
 // user
